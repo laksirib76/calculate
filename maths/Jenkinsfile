@@ -29,7 +29,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
-                    url: "http://cld-devsrv001.corp.local:8082/artifactory",
+                    url: "http://172.18.0.6:8082/artifactory",
 		    credentialsId: 'admin.jfrog'
                 )
 
