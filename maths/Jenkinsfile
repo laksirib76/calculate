@@ -6,8 +6,7 @@ pipeline {
   }
 	tools { 
         maven 'maven3' 
-        jdk 'jdk8' 
-    }
+     }
 	
     stages {
 		stage('Unit Tests') {
@@ -18,7 +17,7 @@ pipeline {
         
         stage("sonar_static_check"){
             steps{
-		withSonarQubeEnv('MySonarQube') {
+		withSonarQubeEnv('sonarqube-1') {
                     // Optionally use a Maven environment you've configured already
                     sh 'mvn -f maths/pom.xml clean sonar:sonar -Dmaven.test.skip=true'
                 }
@@ -41,7 +40,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
-                    url: "http://artifactory:8081/artifactory",
+                    url: "http://cld-devsrv001.corp.local:8082/artifactory",
 		    credentialsId: 'admin.jfrog'
                 )
 
@@ -64,7 +63,7 @@ pipeline {
         stage ('Build & Upload Artifact') {
             steps {
                 rtMavenRun (
-                    tool: "maven3.6", // Tool name from Jenkins configuration
+                    tool: "maven3", // Tool name from Jenkins configuration
                     pom: 'maths/pom.xml',
                     goals: 'clean install -Dmaven.test.skip=true',
                     deployerId: "MAVEN_DEPLOYER",
